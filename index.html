@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Button Magic</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      transition: background-color 0.5s ease;
+      text-align: center;
+    }
+
+    .game-container {
+      max-width: 800px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2em;
+      color: #666;
+    }
+
+    .buttons-container {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .magic-button {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      font-weight: bold;
+    }
+
+    /* Button Levels */
+    .level-0 { background-color: #4CAF50; color: white; }
+    .level-1 { background-color: #FFC107; color: #333; transform: scale(1.1); }
+    .level-2 { background-color: #FF5722; color: white; transform: rotate(5deg); font-size: 1.1em; }
+    .level-3 { background-color: #9C27B0; color: white; transform: skewX(-10deg); border-radius: 50%; }
+    .level-4 { background-color: #3F51B5; color: white; transform: scale(0.9) rotate(10deg); border-radius: 20px; font-style: italic; }
+    .level-5 { background-color: #00BCD4; color: #333; transform: scale(1.2) translateY(-10px); text-shadow: 2px 2px #000; font-size: 1.2em; }
+    .level-6 { background-color: #8BC34A; color: white; transform: rotate(15deg) skewY(10deg); box-shadow: 5px 5px #ffeb3b; }
+    .level-7 { background-color: #E91E63; color: #FFEB3B; animation: pulse 1s infinite; }
+    .level-8 { background-color: #673AB7; color: #fff; transform: scale(1.3) rotate(-20deg); text-decoration: underline; }
+    .level-9 { background-color: #212121; color: #76FF03; font-family: monospace; animation: glitch 0.5s infinite; }
+    .level-10 { background-color: #FFEB3B; color: #F44336; transform: scale(1.5) rotate(360deg); font-size: 1.5em; animation: spin 1s infinite linear; }
+    .level-11 { background-color: #000; color: #FFF; font-size: 2em; animation: strobe 0.2s infinite; }
+    .level-12 { background-color: #ff9800; color: #444; animation: shake 0.3s infinite; }
+    .level-13 { background-color: #e91e63; color: white; transform: scale(1.1) rotate(180deg); animation: bounce 1s infinite; }
+    .level-14 { background-color: #00796b; color: white; transform: translateX(10px); animation: moveLeftRight 2s infinite; }
+    .level-15 { background-color: #333; color: #ffeb3b; border: 5px solid #ffeb3b; box-shadow: 0 0 20px #ffeb3b; }
+    .level-16 { background-color: #795548; color: white; transform: scale(1.4) perspective(100px) rotateX(45deg); animation: wobble 2s infinite; }
+    .level-17 { background-color: #f44336; color: white; animation: fadeOutIn 1.5s infinite; }
+    .level-18 { background-color: #9c27b0; color: #fff; animation: glow 2s infinite alternate; }
+    .level-19 { background-color: #212121; color: #f0f; transform: scale(0.8) skewY(-20deg); font-size: 1.3em; animation: pulse 0.7s infinite alternate; }
+    .level-20 { background-color: #fff; color: #333; font-size: 2.5em; text-transform: uppercase; animation: glitchText 1s infinite; }
+    .level-21 { background-color: #000; color: #fff; animation: colorFlash 0.5s infinite; }
+
+    /* NEW button styles (22–30) */
+    .level-22 { background: linear-gradient(45deg, #ff0000, #ff8800); color: #fff; animation: shake 0.2s infinite; }
+    .level-23 { background: linear-gradient(90deg, #2196f3, #e91e63); color: #fff; transform: scale(1.2) rotate(-10deg); }
+    .level-24 { background: #222; color: #0ff; font-size: 1.4em; text-shadow: 0 0 10px #0ff; animation: glow 1s infinite alternate; }
+    .level-25 { background: #ffeb3b; color: #000; border: 3px dashed #000; transform: skewX(15deg) scale(1.3); }
+    .level-26 { background: linear-gradient(135deg, #673ab7, #3f51b5); color: #fff; font-weight: bold; animation: pulse 0.6s infinite; }
+    .level-27 { background: #111; color: #ff4081; font-size: 1.5em; animation: fadeOutIn 1s infinite; }
+    .level-28 { background: #00e676; color: #000; border-radius: 50%; transform: scale(1.5); animation: bounce 1s infinite; }
+    .level-29 { background: #ff1744; color: #fff; text-transform: uppercase; font-size: 1.7em; animation: strobe 0.3s infinite; }
+    .level-30 { background: linear-gradient(270deg, #f0f, #0ff, #ff0); color: #000; font-size: 2em; font-weight: bold; }
+
+    /* Animations */
+    @keyframes pulse { 0%,100%{transform:scale(1)}50%{transform:scale(1.05)} }
+    @keyframes glitch {0%{transform:translate(0)}20%{transform:translate(-2px,2px)}40%{transform:translate(-2px,-2px)}60%{transform:translate(2px,2px)}80%{transform:translate(2px,-2px)}100%{transform:translate(0)}}
+    @keyframes spin { 0%{transform:rotate(0) scale(1.5)}100%{transform:rotate(360deg) scale(1.5)} }
+    @keyframes strobe {0%,100%{opacity:1}50%{opacity:0.5}}
+    @keyframes shake {0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-5px)}}
+    @keyframes bounce {0%,20%,50%,80%,100%{transform:translateY(0)}40%{transform:translateY(-30px)}60%{transform:translateY(-15px)}}
+    @keyframes moveLeftRight {0%{transform:translateX(10px)}50%{transform:translateX(-10px)}100%{transform:translateX(10px)}}
+    @keyframes wobble {0%,100%{transform:perspective(100px) rotateX(45deg)}25%{transform:perspective(100px) rotateX(55deg)}50%{transform:perspective(100px) rotateX(35deg)}75%{transform:perspective(100px) rotateX(55deg)}}
+    @keyframes fadeOutIn {0%,100%{opacity:1}50%{opacity:0.2}}
+    @keyframes glow {0%,100%{box-shadow:0 0 5px #fff,0 0 10px #fff,0 0 20px #9c27b0,0 0 30px #9c27b0,0 0 40px #9c27b0}50%{box-shadow:0 0 20px #fff,0 0 30px #fff,0 0 40px #9c27b0,0 0 50px #9c27b0,0 0 60px #9c27b0}}
+    @keyframes glitchText {0%{text-shadow:2px 2px #f0f,-2px -2px #0ff}50%{text-shadow:-2px 2px #f0f,2px -2px #0ff}100%{text-shadow:2px -2px #f0f,-2px 2px #0ff}}
+    @keyframes colorFlash {0%{background:#000;color:#fff}25%{background:#fff;color:#000}50%{background:#000;color:#fff}75%{background:#fff;color:#000}100%{background:#000;color:#fff}}
+  </style>
+</head>
+<body>
+
+<div class="game-container">
+  <h1>Button Magic</h1>
+  <p>Appease the button god.</p>
+  <div id="buttons-container" class="buttons-container">
+    <button id="main-button" class="magic-button level-0">Click Me!</button>
+  </div>
+</div>
+
+<!-- Music -->
+<audio id="bg-music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+  Your browser does not support audio.
+</audio>
+
+<script>
+  const buttonsContainer = document.getElementById('buttons-container');
+  let clickCount = 0;
+  const initialButton = document.getElementById('main-button');
+  const music = document.getElementById('bg-music');
+
+  const weirdTexts = [
+    "Don't click me... or do?",
+    "Why are you still clicking?",
+    "I'm feeling wobbly...",
+    "My pixels are shivering.",
+    "What is reality?",
+    "This button has a name.",
+    "The squirrels are watching.",
+    "Just a social experiment.",
+    "Syntax error: human detected.",
+    "Welcome to the void.",
+    "B̷͎̭̭̰͙̑͊̄͗̂̚̕͜ù̷̪͍̇̑̍́͘ţ̴̛͇̫̋̅̑́͊̇͘t̵͇͐͆̋̈͊̽̽͊o̷̠͓̲̦̐̋̓͋́̑̐͠ṉ̵͙͈̜͙͌̒͆̔͐̚̚͝.̴̤͕̱͆̂̊̆̃̄̿̉ȩ̴̛̰͈͛̑̀͑͘x̷̣͖̭̌̃̈́̑̇́͘e̷̛̟̊͂́͘͝͠͝",
+    "The end is neigh.",
+    "Just keep clicking.",
+    "The server is crying.",
+    "Please, no more.",
+    "I feel... different.",
+    "The matrix is glitching.",
+    "Is this a game?",
+    "No more buttons!",
+    "Are you lost?",
+    "The button speaks. And it says 'no.'",
+    "Why do you keep persisting?",
+    "Your hubris disgusts me.",
+    "Perserverance is key.",
+    "ERROR 404: THIS BUTTON DOES NOT EXIST.",
+    "I will tear the fabric of reality apart.",
+    "The end is here.",
+    "It's time to leave for school.",
+    "Ya like jazz?",
+    "You did it. You're really happy now, aren't you? You finished the game."
+  ];
+
+  initialButton.addEventListener('click', createNewButton);
+
+  function createNewButton() {
+    if (clickCount === 0) {
+      music.play().catch(err => console.log("Autoplay blocked:", err));
+    }
+
+    const oldButton = buttonsContainer.querySelector("button");
+    if (oldButton) buttonsContainer.removeChild(oldButton);
+
+    if (clickCount < weirdTexts.length) {
+      clickCount++;
+      const newButton = document.createElement('button');
+      newButton.textContent = weirdTexts[clickCount - 1];
+      newButton.className = `magic-button level-${clickCount}`;
+      newButton.addEventListener('click', createNewButton);
+      buttonsContainer.appendChild(newButton);
+
+      const hue = (clickCount * 15) % 360;
+      document.body.style.backgroundColor = `hsl(${hue}, 70%, 90%)`;
+    } else {
+      const lastButton = document.createElement('button');
+      lastButton.textContent = "It's all over.";
+      lastButton.className = "magic-button level-30";
+      buttonsContainer.appendChild(lastButton);
+      alert("The cycle is complete. The Button God is pleased.");
+    }
+  }
+</script>
+</body>
+</html>
